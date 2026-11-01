@@ -1,0 +1,26 @@
+name: Unpack project
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - project.zip
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace repo contents with project.zip
+        run: |
+          set -e
+          test -f project.zip
+          mkdir /tmp/new
+          unzip -q project.zip -d /tmp/new
+          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name .github -exec rm -rf {} +
+          cp -a /tmp/new/. .
+          git config user.name "unpack-bot"
+          git config user.email "unpack-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "Unpack project (frontend + backend)"
+          git push
