@@ -1,8 +1,0 @@
-{
-  "name": "clinic-management-queue-system",
-  "version": "1.0.0",
-  "description": "Clinic patient registration and queue management system",
-  "main": "server/index.js",
-  "scripts": {"start": "node server/index.js", "dev": "node --watch server/index.js"},
-  "dependencies": {"express": "^4.21.2", "sqlite3": "^5.1.7"}
-}
