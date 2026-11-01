@@ -94,5 +94,17 @@ if (require.main === module) {
     process.exit(1);
   });
 }
-
+  if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+    const User = require('./models/User');
+    const email = process.env.ADMIN_EMAIL.toLowerCase().trim();
+    if (!(await User.findOne({ email }))) {
+      await User.create({
+        name: process.env.ADMIN_NAME || 'Admin',
+        email,
+        password: process.env.ADMIN_PASSWORD,
+        role: 'admin',
+      });
+      console.log(`Admin created: ${email}`);
+    }
+  }
 module.exports = app;
